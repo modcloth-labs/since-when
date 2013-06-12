@@ -1,32 +1,22 @@
+require File.join(File.expand_path(File.dirname(__FILE__)), 'calculator')
+
 module SinceWhen
   module Calculators
-    class DayCalculator
+    class DayCalculator < Calculator
 
       def initialize(last_run)
-        @last_run = last_run
-        @default = Date.today
-      end
-
-      def find
-        if last_run.nil?
-          [default]
-        elsif equals?(last_run, default)
-          []
-        else
-          upto(last_run, default)
-        end
+        super(last_run)
+        @interval_amt = 3600 * 24
       end
 
       private
 
-      attr_reader :last_run, :default
-
-      def equals?(left, right)
-        left == right
+      def increment(time)
+        start_of_interval(time + 3600 * 24)
       end
 
-      def upto(first, last)
-        (first..last).to_a
+      def start_of_interval(time)
+        Time.utc(time.year, time.month, time.day)
       end
     end
   end

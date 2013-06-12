@@ -1,42 +1,21 @@
+require File.join(File.expand_path(File.dirname(__FILE__)), 'calculator')
+
 module SinceWhen
   module Calculators
-    class HourCalculator
+    class HourCalculator < Calculator
 
-      def initialize(last_run)
-        @last_run = last_run
-        @default = start_of_hour(Time.now.utc)
-      end
-
-      def find
-        if last_run.nil?
-          [default]
-        elsif equals?(last_run, default)
-          []
-        else
-          upto(last_run, default)
-        end
+      def initalize(last_run)
+        super(last_run)
+        @interval_amt = 3600
       end
 
       private
 
-      attr_reader :last_run, :default
-
-      def equals?(left, right)
-        start_of_hour(left) == start_of_hour(right)
+      def increment(time)
+        start_of_interval(time + 3600)
       end
 
-      def upto(first, last)
-        t1, t2 = start_of_hour(first), start_of_hour(last)
-
-        [].tap do |hours|
-          while t1 <= t2 do
-            hours << t1
-            t1 = start_of_hour(t1 + 3600)
-          end
-        end
-      end
-
-      def start_of_hour(time)
+      def start_of_interval(time)
         Time.utc(time.year, time.month, time.day, time.hour)
       end
     end
