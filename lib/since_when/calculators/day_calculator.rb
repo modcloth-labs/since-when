@@ -11,10 +11,6 @@ module SinceWhen
 
       private
 
-      def increment(time)
-        start_of_interval(time + 3600 * 24)
-      end
-
       def start_of_interval(time)
         Time.utc(time.year, time.month, time.day)
       end
