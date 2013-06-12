@@ -1,12 +1,11 @@
 require 'date'
+require 'time'
 
 module SinceWhen
   class MetaFile
-    DEFAULT_PATH = File.join(File.expand_path(File.dirname(__FILE__)), '../..')
-
     attr_reader :meta_path
 
-    def initialize(meta_path = DEFAULT_PATH)
+    def initialize(meta_path)
       @meta_path = meta_path
     end
 
@@ -18,10 +17,13 @@ module SinceWhen
       fetch_last if exists?
     end
 
-    def update!(new_date)
+    def update!(new_time)
+      written = 0
       File.open(meta_path, 'w') do |f|
-        f.write(new_date.to_s)
+        written = f.write(new_time.to_s)
       end
+
+      written > 0
     end
 
     private
@@ -41,12 +43,8 @@ module SinceWhen
       last
     end
 
-    def default_path
-      DEFAULT_PATH
-    end
-
     def parse(last)
-      Date.parse(last.chomp) rescue nil
+      Time.parse(last.chomp).utc rescue nil
     end
   end
 end

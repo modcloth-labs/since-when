@@ -1,7 +1,8 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), '../../../lib/since_when/meta_file')
 
 describe SinceWhen::MetaFile do
-  let(:file) { double('file', readlines: ["2013-01-01"]) }
+  let(:file) { double('file', readlines: ["2012-12-31 19:00:00"]) }
+  let(:meta_file) { described_class.new("/tmp") }
 
   before(:each) do
     File.stub(:exists?).and_return(true)
@@ -11,8 +12,7 @@ describe SinceWhen::MetaFile do
   context "the given meta file exists" do
     context "the meta file contains the time of the last run" do
       it "should return the last run" do
-        described_class.new.last_run.should == Date.new(2013, 1, 1)
-
+        meta_file.last_run.should == Time.utc(2013, 1, 1)
       end
     end
 
@@ -20,7 +20,7 @@ describe SinceWhen::MetaFile do
       it "should return nil" do
         file.stub(:readlines).and_return([])
 
-        described_class.new.last_run.should be_nil
+        meta_file.last_run.should be_nil
       end
     end
 
@@ -28,7 +28,7 @@ describe SinceWhen::MetaFile do
       it "should return nil" do
         file.stub(:readlines).and_return(["ooh goody"])
 
-        described_class.new.last_run.should be_nil
+        meta_file.last_run.should be_nil
       end
     end
   end
@@ -37,7 +37,7 @@ describe SinceWhen::MetaFile do
     it "should return nil" do
       File.stub(:exists?).and_return(false)
 
-      described_class.new.last_run.should be_nil
+      meta_file.last_run.should be_nil
     end
   end
 end
