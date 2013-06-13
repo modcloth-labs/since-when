@@ -1,6 +1,6 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), 'calculators/day_calculator')
-require File.join(File.expand_path(File.dirname(__FILE__)), 'calculators/hour_calculator')
-require File.join(File.expand_path(File.dirname(__FILE__)), 'meta_file')
+require_relative 'calculators/day_calculator'
+require_relative 'calculators/hour_calculator'
+require_relative 'meta_file'
 
 module SinceWhen
   class MissedRunCalculator

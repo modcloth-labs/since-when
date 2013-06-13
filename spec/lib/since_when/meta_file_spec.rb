@@ -1,4 +1,4 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), '../../../lib/since_when/meta_file')
+require_relative '../../../lib/since_when/meta_file'
 
 describe SinceWhen::MetaFile do
   let(:file) { double('file', readlines: ["2012-12-31 19:00:00"]) }

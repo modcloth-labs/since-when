@@ -1,4 +1,4 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), 'calculator')
+require_relative 'calculator'
 
 module SinceWhen
   module Calculators

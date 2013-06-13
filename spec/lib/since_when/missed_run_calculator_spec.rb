@@ -1,4 +1,4 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), '../../../lib/since_when/missed_run_calculator')
+require_relative '../../../lib/since_when/missed_run_calculator'
 
 describe SinceWhen::MissedRunCalculator do
   let(:time_one) { Time.utc(2013, 1, 1) }

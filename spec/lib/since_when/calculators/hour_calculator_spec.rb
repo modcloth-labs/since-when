@@ -1,4 +1,4 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), '../../../../lib/since_when/calculators/hour_calculator')
+require_relative '../../../../lib/since_when/calculators/hour_calculator'
 
 describe SinceWhen::Calculators::HourCalculator do
   let(:time) { Time.utc(2013, 6, 1, 5, 30) }
