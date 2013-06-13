@@ -3,7 +3,7 @@ require_relative 'calculators/hour_calculator'
 require_relative 'meta_file'
 
 module SinceWhen
-  class MissedRunCalculator
+  class MissedRunner
     VALID_INTERVALS = [:hour, :day]
 
     def initialize(meta_path)
@@ -16,7 +16,7 @@ module SinceWhen
       calculator_for(interval).new(meta.last_run).find
     end
 
-    def find_each(interval)
+    def run(interval)
       last, updated = nil, false
 
       begin

@@ -1,6 +1,6 @@
-require_relative '../../../lib/since_when/missed_run_calculator'
+require_relative '../../../lib/since_when/missed_runner'
 
-describe SinceWhen::MissedRunCalculator do
+describe SinceWhen::MissedRunner do
   let(:time_one) { Time.utc(2013, 1, 1) }
   let(:time_two) { Time.utc(2013, 1, 2) }
   let(:meta) { double('meta', last_run: Time.now) }
@@ -40,7 +40,7 @@ describe SinceWhen::MissedRunCalculator do
       it "should provide each #{interval} since the last run" do
         count = 0
 
-        runner.find_each(interval) do |time|
+        runner.run(interval) do |time|
           if count == 0
             time.should == time_one
           elsif count == 1
@@ -54,14 +54,14 @@ describe SinceWhen::MissedRunCalculator do
         it "should update the meta file to the final timestamp" do
           meta.should_receive(:update!).with(time_two)
 
-          runner.find_each(interval) do |time|
+          runner.run(interval) do |time|
             # noop
           end
         end
 
         context "the meta file is updated" do
           it "should return true" do
-            result = runner.find_each(interval) do |time|
+            result = runner.run(interval) do |time|
               # noop
             end
 
@@ -73,7 +73,7 @@ describe SinceWhen::MissedRunCalculator do
           it "should return false" do
             meta.stub(:update!).and_raise(IOError)
 
-            result = runner.find_each(interval) do |time|
+            result = runner.run(interval) do |time|
               # noop
             end
 
@@ -87,7 +87,7 @@ describe SinceWhen::MissedRunCalculator do
           count = 0
           meta.should_receive(:update!).with(time_one)
 
-          runner.find_each(interval) do |time|
+          runner.run(interval) do |time|
             raise RuntimeError if count == 1
             count += 1
           end
@@ -96,7 +96,7 @@ describe SinceWhen::MissedRunCalculator do
         context "the meta file is updated" do
           it "should return true" do
             count = 0
-            result = runner.find_each(interval) do |time|
+            result = runner.run(interval) do |time|
               raise RuntimeError if count == 1
               count += 1
             end
@@ -109,7 +109,7 @@ describe SinceWhen::MissedRunCalculator do
           it "should return false" do
             meta.stub(:update!).and_raise(IOError)
 
-            result = runner.find_each(interval) do |time|
+            result = runner.run(interval) do |time|
               raise RuntimeError if count == 1
 
               count += 1
@@ -124,13 +124,13 @@ describe SinceWhen::MissedRunCalculator do
         it "should not update the meta file" do
           meta.should_not_receive(:update!)
 
-          runner.find_each(interval) do |time|
+          runner.run(interval) do |time|
             raise RuntimeError
           end
         end
 
         it "should return false" do
-          result = runner.find_each(interval) do |time|
+          result = runner.run(interval) do |time|
             raise RuntimeError
           end
 
