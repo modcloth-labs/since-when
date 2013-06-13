@@ -30,7 +30,8 @@ module SinceWhen
       end
 
       def upto(first, last)
-        t1, t2 = start_of_interval(first), start_of_interval(last)
+        t1 = increment(first)
+        t2 = start_of_interval(last)
 
         [].tap do |times|
           while t1 <= t2 do

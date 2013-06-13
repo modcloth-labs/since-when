@@ -23,7 +23,6 @@ describe SinceWhen::Calculators::DayCalculator do
     context "the last run was before the current date" do
       it "should calculate dates from the last run up to and including the current date" do
         described_class.new(time - 3 * 3600 * 24).find.should == [
-          Time.utc(2013, 5, 29),
           Time.utc(2013, 5, 30),
           Time.utc(2013, 5, 31),
           Time.utc(2013, 6, 1)

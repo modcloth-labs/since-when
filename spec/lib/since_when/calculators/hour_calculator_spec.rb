@@ -24,7 +24,6 @@ describe SinceWhen::Calculators::HourCalculator do
   context "the last run is before the current hour" do
     it "should calculate hours from the last run up to and including the current hour" do
       described_class.new(time - 3 * 60 * 60).find.should == [
-        Time.utc(time.year, time.month, time.day, time.hour - 3),
         Time.utc(time.year, time.month, time.day, time.hour - 2),
         Time.utc(time.year, time.month, time.day, time.hour - 1),
         Time.utc(time.year, time.month, time.day, time.hour)
