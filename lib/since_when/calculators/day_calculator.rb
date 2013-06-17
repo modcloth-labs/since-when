@@ -4,9 +4,8 @@ module SinceWhen
   module Calculators
     class DayCalculator < Calculator
 
-      def initialize(last_run)
-        super(last_run)
-        @interval_amt = 3600 * 24
+      def interval_amt
+        3600 * 24
       end
 
       private

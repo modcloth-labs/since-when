@@ -4,7 +4,7 @@ module SinceWhen
 
       def initialize(last_run)
         @last_run = last_run
-        @default = start_of_interval(Time.now.utc)
+        @default = decrement(Time.now.utc)
       end
 
       def find
@@ -27,6 +27,10 @@ module SinceWhen
 
       def increment(time)
         start_of_interval(time + interval_amt)
+      end
+
+      def decrement(time)
+        start_of_interval(time - interval_amt)
       end
 
       def upto(first, last)

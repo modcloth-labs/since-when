@@ -4,9 +4,8 @@ module SinceWhen
   module Calculators
     class HourCalculator < Calculator
 
-      def initialize(last_run)
-        super(last_run)
-        @interval_amt = 3600
+      def interval_amt
+        3600
       end
 
       private

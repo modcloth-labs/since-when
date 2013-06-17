@@ -2,7 +2,7 @@ require_relative '../../../lib/since_when/missed_runner'
 require 'tmpdir'
 
 describe SinceWhen::MissedRunner do
-  let(:current_time) { Time.utc(2013, 6, 1, 8, 20, 15) }
+  let(:current_time) { Time.utc(2013, 6, 2, 8, 20, 15) }
 
   before(:all) do
     @meta_dir = Dir.mktmpdir('meta_dir')
