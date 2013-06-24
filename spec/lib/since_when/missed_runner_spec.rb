@@ -50,39 +50,67 @@ describe SinceWhen::MissedRunner do
         end
       end
 
-      context "all runtimes are run to completion" do
-        it "should update the meta file to the final timestamp" do
-          meta.should_receive(:update!).with(time_two)
+      context "all jobs are run without error" do
+        context "jobs runtimes are run successfully" do
+          it "should update the meta file to the final timestamp" do
+            meta.should_receive(:update!).with(time_two)
 
-          runner.run(interval) do |time|
-            # noop
+            runner.run(interval) do |time|
+              true
+            end
+          end
+
+          context "the meta file is updated" do
+            it "should return true" do
+              result = runner.run(interval) do |time|
+                true
+              end
+
+              result.should be_true
+            end
+          end
+
+          context "the meta file is not updated" do
+            it "should return false" do
+              meta.stub(:update!).and_raise(IOError)
+
+              result = runner.run(interval) do |time|
+                true
+              end
+
+              result.should be_false
+            end
           end
         end
 
-        context "the meta file is updated" do
-          it "should return true" do
-            result = runner.run(interval) do |time|
-              # noop
-            end
+        context "one of the runtimes runs with a failure" do
+          it "should update the meta file to the final completed timestamp" do
+            meta.should_receive(:update!).with(time_one)
 
-            result.should be_true
+            ran_once = false
+            runner.run(interval) do |time|
+              if ran_once
+                nil
+              else
+                ran_once = true
+                true
+              end
+            end
           end
         end
 
-        context "the meta file is not updated" do
-          it "should return false" do
-            meta.stub(:update!).and_raise(IOError)
+        context "the first job runs without a failure" do
+          it "should not update the meta file" do
+            meta.should_not_receive(:update!)
 
-            result = runner.run(interval) do |time|
-              # noop
+            runner.run(interval) do |time|
+              false
             end
-
-            result.should be_false
           end
         end
       end
 
-      context "some of the runtimes are run to completion" do
+      context "one of the running jobs raises an error" do
         it "should update the meta file to the final completed timestamp" do
           count = 0
           meta.should_receive(:update!).with(time_one)
@@ -90,6 +118,7 @@ describe SinceWhen::MissedRunner do
           runner.run(interval) do |time|
             raise RuntimeError if count == 1
             count += 1
+            true
           end
         end
 
@@ -99,6 +128,7 @@ describe SinceWhen::MissedRunner do
             result = runner.run(interval) do |time|
               raise RuntimeError if count == 1
               count += 1
+              true
             end
 
             result.should be_true
@@ -113,6 +143,7 @@ describe SinceWhen::MissedRunner do
               raise RuntimeError if count == 1
 
               count += 1
+              true
             end
 
             result.should be_false
@@ -120,7 +151,7 @@ describe SinceWhen::MissedRunner do
         end
       end
 
-      context "no runtimes are run to completion" do
+      context "the first run job raises an error" do
         it "should not update the meta file" do
           meta.should_not_receive(:update!)
 

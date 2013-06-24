@@ -21,12 +21,13 @@ module SinceWhen
 
       begin
         find(interval).each do |time|
-          yield time
+          successful = yield time
 
+          break unless successful
           last = time
         end
       rescue Exception => e
-        #$stderr.puts "Didn't update meta file, failed execution"
+        # do something?
       ensure
         updated = update_meta(last)
       end
