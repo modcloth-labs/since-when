@@ -1,7 +1,7 @@
 require_relative '../../../lib/since_when/meta_file'
 
 describe SinceWhen::MetaFile do
-  let(:file) { double('file', readlines: ["2012-12-31 19:00:00"]) }
+  let(:file) { double('file', readlines: ["2012-12-31 19:00:00 EST"]) }
   let(:meta_file) { described_class.new("/tmp") }
 
   before(:each) do
