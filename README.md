@@ -1,5 +1,7 @@
 # since-when
 
+[![Build Status](https://travis-ci.org/modcloth-labs/since-when.png?branch=master)](https://travis-ci.org/modcloth-labs/since-when)
+
 since-when is a way to manage repeated cron-like jobs in ruby. Rather
 than trying to recreate or replace proven scheduling tools, it works
 with them.
