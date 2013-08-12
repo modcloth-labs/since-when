@@ -24,12 +24,11 @@ module SinceWhen
           successful = yield time
 
           break unless successful
-          last = time
+
+          updated = update_meta(time)
         end
       rescue Exception => e
         # do something?
-      ensure
-        updated = update_meta(last)
       end
 
       updated
